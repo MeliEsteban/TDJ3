@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class Board : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Board : MonoBehaviour
     public TetrominoData[] tetrominoes;
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
+    public bool gameOver = false;
 
     public RectInt Bounds
     {
@@ -40,16 +42,19 @@ public class Board : MonoBehaviour
 
         this.activePiece.Initialize(this, this.spawnPosition, data);
 
-        if (IsValidPosition(this.activePiece, this.spawnPosition)){
+        if (IsValidPosition(this.activePiece, this.spawnPosition))
+        {
             Set(this.activePiece);
         } else {
-            GameOver();
+            GameOverManager();
         }
     }
 
-    private void GameOver()
+    private void GameOverManager()
     {
         this.tilemap.ClearAllTiles();
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
     }
 
     public void Set(Piece piece)
